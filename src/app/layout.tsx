@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
 });
 
@@ -38,13 +39,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
+        className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
-        <Header />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
+        <ThemeProvider>
+          {/* Ambient glow orbs — dark mode only */}
+          <div className="pointer-events-none fixed left-1/2 top-0 z-0 hidden h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-red-600/20 blur-[120px] dark:block" />
+          <div className="pointer-events-none fixed bottom-0 right-0 z-0 hidden h-[400px] w-[600px] rounded-full bg-amber-600/10 blur-[100px] dark:block" />
+
+          <Header />
+          <main className="relative z-10 min-h-screen pt-16">{children}</main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

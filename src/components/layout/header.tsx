@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { UserMenu } from "@/components/layout/user-menu";
 import { createClient } from "@/lib/supabase/server";
 
@@ -20,40 +22,36 @@ export async function Header() {
     .toUpperCase();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+    <header className="fixed top-0 z-50 w-full border-b border-border/50 glass-effect">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <div className="flex items-center gap-8">
-          <Link href="/" className="text-xl font-bold tracking-tight">
-            <span className="text-orange-500">f</span>eever
+          <Link href="/" className="flex items-center gap-2 text-xl font-bold tracking-tight">
+            <Flame className="size-5 text-primary" />
+            <span>feever<span className="text-primary">.co</span></span>
           </Link>
-          <nav className="hidden items-center gap-6 text-sm md:flex">
+          <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
             <Link
               href="/explore"
               className="text-muted-foreground transition-colors hover:text-foreground"
             >
-              Explore
+              Marketplace
             </Link>
             <Link
               href="/category/starters"
               className="text-muted-foreground transition-colors hover:text-foreground"
             >
-              Starters
+              Categories
             </Link>
             <Link
-              href="/category/workflow-kits"
+              href="/seller/products/new"
               className="text-muted-foreground transition-colors hover:text-foreground"
             >
-              Workflow Kits
-            </Link>
-            <Link
-              href="/category/extensions"
-              className="text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Extensions
+              Sell
             </Link>
           </nav>
         </div>
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           {user ? (
             <UserMenu
               user={{ email, displayName, avatarUrl, initials }}
@@ -66,7 +64,7 @@ export async function Header() {
               <Button
                 asChild
                 size="sm"
-                className="bg-orange-500 hover:bg-orange-600"
+                className="bg-foreground text-background hover:bg-foreground/90"
               >
                 <Link href="/signup">Get Started</Link>
               </Button>

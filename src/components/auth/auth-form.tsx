@@ -34,8 +34,8 @@ export function AuthForm({ mode, next }: AuthFormProps) {
   if (magicLinkSent) {
     return (
       <div className="space-y-4 text-center">
-        <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-orange-500/10">
-          <Mail className="size-6 text-orange-500" />
+        <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-primary/10">
+          <Mail className="size-6 text-primary" />
         </div>
         <div>
           <h3 className="text-lg font-semibold">Check your email</h3>
@@ -95,7 +95,7 @@ export function AuthForm({ mode, next }: AuthFormProps) {
         </div>
         <Button
           type="submit"
-          className="w-full bg-orange-500 hover:bg-orange-600"
+          className="w-full bg-primary hover:bg-primary/90"
           disabled={loading}
         >
           {loading && <Loader2 className="size-4 animate-spin" />}
@@ -109,7 +109,7 @@ export function AuthForm({ mode, next }: AuthFormProps) {
             Don&apos;t have an account?{" "}
             <Link
               href={next ? `/signup?next=${encodeURIComponent(next)}` : "/signup"}
-              className="text-orange-500 hover:text-orange-400"
+              className="text-primary hover:text-primary/80"
             >
               Sign up
             </Link>
@@ -119,7 +119,7 @@ export function AuthForm({ mode, next }: AuthFormProps) {
             Already have an account?{" "}
             <Link
               href={next ? `/login?next=${encodeURIComponent(next)}` : "/login"}
-              className="text-orange-500 hover:text-orange-400"
+              className="text-primary hover:text-primary/80"
             >
               Sign in
             </Link>

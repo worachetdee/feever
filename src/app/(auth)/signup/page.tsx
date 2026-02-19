@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Flame } from "lucide-react";
 import { AuthForm } from "@/components/auth/auth-form";
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ export default async function SignupPage({
     <div className="flex min-h-screen items-center justify-center">
       <div className="w-full max-w-sm space-y-6 p-6">
         <div className="text-center">
+          <Flame className="mx-auto mb-4 size-8 text-primary" />
           <h1 className="text-2xl font-bold tracking-tight">
             Create an account
           </h1>

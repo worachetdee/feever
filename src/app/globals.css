@@ -7,8 +7,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -50,22 +50,69 @@
   --color-feever: var(--feever);
   --color-feever-hover: var(--feever-hover);
   --color-feever-glow: var(--feever-glow);
+  --color-feever-amber: var(--feever-amber);
   --color-success: var(--success);
   --color-warning: var(--warning);
 }
 
-/* feever dark-first theme — heat/fever aesthetic */
+/* ── Light theme (default) ── */
 :root {
   --radius: 0.625rem;
 
-  /* Dark theme as default */
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(0 0% 9%);
+  --card: hsl(0 0% 97%);
+  --card-foreground: hsl(0 0% 9%);
+  --popover: hsl(0 0% 97%);
+  --popover-foreground: hsl(0 0% 9%);
+  --primary: hsl(4 90% 58%);
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(0 0% 94%);
+  --secondary-foreground: hsl(0 0% 15%);
+  --muted: hsl(0 0% 94%);
+  --muted-foreground: hsl(0 0% 40%);
+  --accent: hsl(0 0% 94%);
+  --accent-foreground: hsl(0 0% 15%);
+  --destructive: hsl(0 84% 60%);
+  --border: hsl(0 0% 88%);
+  --input: hsl(0 0% 88%);
+  --ring: hsl(4 90% 58%);
+
+  /* feever brand colors — shared across themes */
+  --feever: hsl(4 90% 58%);
+  --feever-hover: hsl(4 90% 48%);
+  --feever-glow: hsl(4 90% 58% / 0.15);
+  --feever-amber: hsl(43 100% 50%);
+  --success: hsl(142 71% 45%);
+  --warning: hsl(48 96% 53%);
+
+  /* Charts */
+  --chart-1: hsl(4 90% 58%);
+  --chart-2: hsl(15 90% 55%);
+  --chart-3: hsl(43 100% 50%);
+  --chart-4: hsl(142 71% 45%);
+  --chart-5: hsl(200 80% 50%);
+
+  /* Sidebar */
+  --sidebar: hsl(0 0% 97%);
+  --sidebar-foreground: hsl(0 0% 9%);
+  --sidebar-primary: hsl(4 90% 58%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(0 0% 94%);
+  --sidebar-accent-foreground: hsl(0 0% 15%);
+  --sidebar-border: hsl(0 0% 88%);
+  --sidebar-ring: hsl(4 90% 58%);
+}
+
+/* ── Dark theme ── */
+.dark {
   --background: hsl(0 0% 4%);
   --foreground: hsl(0 0% 95%);
-  --card: hsl(0 0% 7%);
+  --card: hsl(0 0% 8%);
   --card-foreground: hsl(0 0% 95%);
-  --popover: hsl(0 0% 7%);
+  --popover: hsl(0 0% 8%);
   --popover-foreground: hsl(0 0% 95%);
-  --primary: hsl(25 95% 53%);
+  --primary: hsl(4 90% 58%);
   --primary-foreground: hsl(0 0% 100%);
   --secondary: hsl(0 0% 12%);
   --secondary-foreground: hsl(0 0% 95%);
@@ -76,31 +123,26 @@
   --destructive: hsl(0 84% 60%);
   --border: hsl(0 0% 15%);
   --input: hsl(0 0% 15%);
-  --ring: hsl(25 95% 53%);
+  --ring: hsl(4 90% 58%);
 
-  /* feever brand colors */
-  --feever: hsl(25 95% 53%);
-  --feever-hover: hsl(25 95% 45%);
-  --feever-glow: hsl(25 95% 53% / 0.2);
-  --success: hsl(142 71% 45%);
-  --warning: hsl(48 96% 53%);
+  --feever-glow: hsl(4 90% 58% / 0.2);
 
   /* Charts */
-  --chart-1: hsl(25 95% 53%);
-  --chart-2: hsl(32 95% 50%);
-  --chart-3: hsl(40 96% 53%);
+  --chart-1: hsl(4 90% 58%);
+  --chart-2: hsl(15 90% 55%);
+  --chart-3: hsl(43 100% 50%);
   --chart-4: hsl(142 71% 45%);
   --chart-5: hsl(200 80% 50%);
 
   /* Sidebar */
   --sidebar: hsl(0 0% 5%);
   --sidebar-foreground: hsl(0 0% 95%);
-  --sidebar-primary: hsl(25 95% 53%);
+  --sidebar-primary: hsl(4 90% 58%);
   --sidebar-primary-foreground: hsl(0 0% 100%);
   --sidebar-accent: hsl(0 0% 10%);
   --sidebar-accent-foreground: hsl(0 0% 95%);
   --sidebar-border: hsl(0 0% 15%);
-  --sidebar-ring: hsl(25 95% 53%);
+  --sidebar-ring: hsl(4 90% 58%);
 }
 
 @layer base {
@@ -110,4 +152,58 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@layer utilities {
+  .heat-gradient-text {
+    background: linear-gradient(135deg, hsl(4 90% 58%), hsl(43 100% 50%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .grid-bg {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(circle at center, black, transparent 80%);
+  }
+}
+
+/* ── Glass effect — theme-aware ── */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+}
+
+.dark .glass-effect {
+  background: rgba(10, 10, 10, 0.8);
+}
+
+/* ── Grid bg — dark variant ── */
+.dark .grid-bg {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+/* ── Product card — outside @layer so it beats Tailwind's base * border reset ── */
+.heat-border-gradient {
+  background: linear-gradient(hsl(0 0% 97%), hsl(0 0% 97%)) padding-box,
+    linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(255, 183, 0, 0.08)) border-box;
+  border: 1px solid transparent;
+}
+
+.dark .heat-border-gradient {
+  background: linear-gradient(#141414, #141414) padding-box,
+    linear-gradient(135deg, rgba(239, 68, 68, 0.4), rgba(255, 183, 0, 0.1)) border-box;
+}
+
+.product-card {
+  transition: all 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(239, 68, 68, 0.5);
+  box-shadow: 0 10px 40px -10px rgba(239, 68, 68, 0.15);
 }

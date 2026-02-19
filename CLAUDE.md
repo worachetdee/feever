@@ -269,34 +269,76 @@ Enable RLS on all tables. Key policies:
 ## Design System
 
 ### Theme
-Dark-first design. The brand is heat/fever — warm, energetic, premium.
+Light-default with dark mode toggle. The brand is heat/fever — warm, energetic, premium. Uses `next-themes` with `defaultTheme="light"` and `enableSystem`.
 
+**Light theme (default):**
 ```
-Background:     hsl(0, 0%, 4%)       -- near-black (#0a0a0a)
-Surface:        hsl(0, 0%, 7%)       -- dark card (#121212)
-Surface Hover:  hsl(0, 0%, 10%)      -- hover state (#1a1a1a)
-Border:         hsl(0, 0%, 15%)      -- subtle borders (#262626)
-Text Primary:   hsl(0, 0%, 95%)      -- white-ish (#f2f2f2)
-Text Secondary: hsl(0, 0%, 55%)      -- muted (#8c8c8c)
-Accent:         hsl(25, 95%, 53%)    -- feever orange (#f97316)
-Accent Hover:   hsl(25, 95%, 45%)    -- darker orange
-Accent Glow:    hsl(25, 95%, 53% / 0.2) -- glow effect
-Success:        hsl(142, 71%, 45%)   -- green
-Warning:        hsl(48, 96%, 53%)    -- amber
-Error:          hsl(0, 84%, 60%)     -- red
+Background:     hsl(0, 0%, 100%)          -- white (#ffffff)
+Surface/Card:   hsl(0, 0%, 97%)           -- light gray (#f7f7f7)
+Border:         hsl(0, 0%, 88%)           -- subtle borders (#e0e0e0)
+Text Primary:   hsl(0, 0%, 9%)            -- near-black (#171717)
+Text Secondary: hsl(0, 0%, 40%)           -- muted (#666666)
+```
+
+**Dark theme:**
+```
+Background:     hsl(0, 0%, 4%)            -- near-black (#0a0a0a)
+Surface/Card:   hsl(0, 0%, 8%)            -- dark card (#141414)
+Surface Hover:  hsl(0, 0%, 10%)           -- hover state (#1a1a1a)
+Border:         hsl(0, 0%, 15%)           -- subtle borders (#262626)
+Text Primary:   hsl(0, 0%, 95%)           -- white-ish (#f2f2f2)
+Text Secondary: hsl(0, 0%, 55%)           -- muted (#8c8c8c)
+```
+
+**Shared accent colors (both themes):**
+```
+Accent:         hsl(4, 90%, 58%)          -- feever red (#EF4444)
+Accent Amber:   hsl(43, 100%, 50%)        -- feever amber (#ffb700)
+Accent Hover:   hsl(4, 90%, 48%)          -- darker red
+Accent Glow:    hsl(4, 90%, 58% / 0.2)    -- glow effect
+Heat Gradient:  linear-gradient(135deg, #EF4444, #ffb700)
+Success:        hsl(142, 71%, 45%)        -- green
+Warning:        hsl(48, 96%, 53%)         -- amber
+Error:          hsl(0, 84%, 60%)          -- red
 ```
 
 ### Typography
-- Font: Geist Sans (primary), Geist Mono (code)
+- Primary font: Inter (weights 300–800) via `next/font/google`, variable `--font-inter`
+- Mono font: JetBrains Mono via `next/font/google`, variable `--font-mono`
 - Headings: font-bold, tracking-tight
 - Body: font-normal, leading-relaxed
 
-### Components
-Use shadcn/ui with the dark theme. Override accent color to feever orange. Key components:
-- Card with subtle border glow on hover (orange/amber gradient)
-- Badges for quality tiers (color-coded: unverified=gray, verified=blue, pick=orange, gold=amber)
-- Compatibility badges (pill-shaped, monochrome icons)
-- Heat-gradient backgrounds for hero sections and CTAs
+### Custom Utility Classes (defined in globals.css)
+- `.heat-gradient-text` — gradient-clipped text (red → amber), use on hero keywords
+- `.glass-effect` — theme-aware: light = `rgba(255,255,255,0.8)`, dark = `rgba(10,10,10,0.8)` + `backdrop-filter: blur(12px)`
+- `.grid-bg` — 40px grid lines with radial fade, theme-aware line colors
+- `.heat-border-gradient` — gradient border trick (`padding-box` / `border-box`), theme-aware card bg
+- `.product-card` — hover: `translateY(-4px)` + red border + glow shadow
+
+### Brand
+- Brand mark: `<Flame>` icon from lucide-react (size-5) + `feever.co` text (`.co` in `text-primary`)
+- No standalone "f" logo — always Flame icon + text
+
+### Theme Infrastructure
+- Provider: `src/components/theme-provider.tsx` — wraps app with `next-themes`
+- Toggle: `src/components/theme-toggle.tsx` — Sun/Moon button in header
+- `<html suppressHydrationWarning>` — required by next-themes
+- Ambient glow orbs: dark-mode only (`hidden dark:block`)
+- Use semantic tokens (`bg-background`, `text-foreground`, `bg-card`, `border-border`, etc.) — never hardcode dark/light colors
+- Use `dark:` Tailwind variant only when semantic tokens aren't sufficient
+
+### Component Patterns
+Use shadcn/ui with semantic color tokens. Accent color is feever red (#EF4444). Key patterns:
+- **Glass nav:** Fixed header with `glass-effect` + `border-b border-border/50`
+- **Product cards:** `bg-card` with `heat-border-gradient`, hover: `-translate-y-1` + red border + glow shadow
+- **Badges:** Verified = red tint (`bg-primary/10 text-primary/80 ring-1 ring-primary/20`)
+- **Hero sections:** `grid-bg` pattern + ambient glow orbs (dark only)
+- **CTA cards:** `heat-gradient` top border line (red via → transparent)
+- **Buttons:** Primary CTA = `bg-primary` (feever red), Secondary CTA = `bg-foreground text-background` (auto-inverts)
+
+### Max-Width Convention
+- Wide pages (explore, category, product, dashboard, products list, purchases): `max-w-7xl`
+- Narrow pages (new product, edit product, seller settings, credits, account settings): `max-w-3xl`
 
 ## Key Conventions
 
