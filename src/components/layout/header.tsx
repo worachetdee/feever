@@ -1,7 +1,24 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { UserMenu } from "@/components/layout/user-menu";
+import { createClient } from "@/lib/supabase/server";
 
-export function Header() {
+export async function Header() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const displayName =
+    user?.user_metadata?.full_name ??
+    user?.user_metadata?.user_name ??
+    user?.email?.split("@")[0];
+  const avatarUrl = user?.user_metadata?.avatar_url;
+  const email = user?.email;
+  const initials = (displayName ?? email ?? "?")
+    .slice(0, 2)
+    .toUpperCase();
+
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
@@ -37,12 +54,24 @@ export function Header() {
           </nav>
         </div>
         <div className="flex items-center gap-3">
-          <Button asChild variant="ghost" size="sm">
-            <Link href="/login">Sign In</Link>
-          </Button>
-          <Button asChild size="sm" className="bg-orange-500 hover:bg-orange-600">
-            <Link href="/signup">Get Started</Link>
-          </Button>
+          {user ? (
+            <UserMenu
+              user={{ email, displayName, avatarUrl, initials }}
+            />
+          ) : (
+            <>
+              <Button asChild variant="ghost" size="sm">
+                <Link href="/login">Sign In</Link>
+              </Button>
+              <Button
+                asChild
+                size="sm"
+                className="bg-orange-500 hover:bg-orange-600"
+              >
+                <Link href="/signup">Get Started</Link>
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </header>
