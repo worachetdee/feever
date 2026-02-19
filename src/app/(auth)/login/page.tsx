@@ -14,7 +14,7 @@ export default async function LoginPage({
   const { error, next } = await searchParams;
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <div className="-mt-16 flex min-h-screen items-center justify-center">
       <div className="w-full max-w-sm space-y-6 p-6">
         <div className="text-center">
           <Flame className="mx-auto mb-4 size-8 text-primary" />

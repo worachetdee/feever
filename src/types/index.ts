@@ -1,4 +1,13 @@
-export type { Product, ProductFile, ProductWithSeller } from "./product";
+export type {
+  Product,
+  ProductFile,
+  ProductWithSeller,
+  Purchase,
+  PurchaseWithProduct,
+  Profile,
+  SellerTier,
+  UserRole,
+} from "./product";
 export type {
   Category,
   QualityTier,

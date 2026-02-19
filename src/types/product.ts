@@ -74,3 +74,40 @@ export interface ProductWithSeller extends Product {
     avatar_url: string | null;
   };
 }
+
+export type SellerTier = "free" | "pro" | "team";
+export type UserRole = "buyer" | "seller" | "both";
+
+export interface Profile {
+  id: string;
+  username: string;
+  display_name: string | null;
+  avatar_url: string | null;
+  bio: string | null;
+  website: string | null;
+  role: UserRole;
+  seller_tier: SellerTier;
+  stripe_connect_id: string | null;
+  stripe_connect_onboarded: boolean;
+  credit_balance: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Purchase {
+  id: string;
+  buyer_id: string;
+  product_id: string;
+  amount: number;
+  platform_fee: number;
+  seller_payout: number;
+  fork_royalty: number;
+  stripe_payment_id: string | null;
+  stripe_transfer_id: string | null;
+  credits_used: number;
+  created_at: string;
+}
+
+export interface PurchaseWithProduct extends Purchase {
+  product: ProductWithSeller;
+}

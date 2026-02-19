@@ -6,13 +6,13 @@ import {
   ShoppingCart,
   Rocket,
   Star,
-  BadgeCheck,
-  Terminal,
-  Megaphone,
-  Puzzle,
 } from "lucide-react";
+import { getFeaturedProducts } from "@/lib/supabase/queries";
+import { ProductCard } from "@/components/product/product-card";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const featuredProducts = await getFeaturedProducts(6);
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -134,126 +134,23 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {[
-            {
-              icon: Terminal,
-              iconColor: "text-foreground",
-              bgText: "NEXT",
-              category: "AI-Ready Starter",
-              categoryColor: "text-primary",
-              hoverColor: "group-hover:text-primary",
-              title: "SaaS Starter for Cursor",
-              description:
-                "Complete Next.js boilerplate with Supabase auth, Stripe, and pre-configured .cursorrules for vibe coding.",
-              tags: ["Cursor", "Next.js 15", "Claude 3.5"],
-              price: "$49",
-              seller: "DevFlow",
-              sellerGradient: "from-purple-500 to-blue-500",
-              rating: 5,
-            },
-            {
-              icon: Megaphone,
-              iconColor: "text-amber-500",
-              bgText: "GROW",
-              category: "Workflow Kit",
-              categoryColor: "text-amber-500",
-              hoverColor: "group-hover:text-amber-400",
-              title: "Cold Outreach Architect",
-              description:
-                "Multi-step prompt chain system. Analyzes LinkedIn profiles, generates personalized hooks, and drafts 3-step sequences.",
-              tags: ["GPT-4o", "Claude", "Copywriting"],
-              price: "$29",
-              seller: "GrowthLabs",
-              sellerGradient: "from-green-400 to-cyan-500",
-              rating: 4,
-            },
-            {
-              icon: Puzzle,
-              iconColor: "text-purple-400",
-              bgText: "MCP",
-              category: "AI Extension",
-              categoryColor: "text-purple-400",
-              hoverColor: "group-hover:text-purple-400",
-              title: "Postgres MCP Server",
-              description:
-                "Plug-and-play Model Context Protocol server for secure database querying. Give Claude direct read access to your DB.",
-              tags: ["MCP", "PostgreSQL", "Claude Desktop"],
-              price: "$39",
-              seller: "feever Labs",
-              sellerGradient: "from-orange-400 to-red-500",
-              rating: 5,
-            },
-          ].map((product) => (
-            <div
-              key={product.title}
-              className="product-card heat-border-gradient group overflow-hidden rounded-xl bg-card"
-            >
-              {/* Card image area */}
-              <div className="relative flex h-48 items-center justify-center overflow-hidden bg-gradient-to-br from-muted to-background p-6">
-                <div className="pointer-events-none absolute right-4 top-2 select-none text-6xl font-black text-foreground/5">
-                  {product.bgText}
-                </div>
-                <product.icon
-                  className={`size-16 ${product.iconColor} transition-transform duration-300 group-hover:scale-110`}
-                />
-                <div className="absolute left-4 top-4 flex items-center gap-1 rounded bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-primary/80 ring-1 ring-primary/20">
-                  <BadgeCheck className="size-3" />
-                  Verified
-                </div>
-              </div>
-
-              {/* Card body */}
-              <div className="p-5">
-                <div className="mb-2 flex items-start justify-between">
-                  <div className={`text-xs font-semibold uppercase tracking-wide ${product.categoryColor}`}>
-                    {product.category}
-                  </div>
-                  <div className="font-bold text-foreground">{product.price}</div>
-                </div>
-                <h3
-                  className={`mb-2 text-lg font-bold text-foreground transition-colors ${product.hoverColor}`}
-                >
-                  {product.title}
-                </h3>
-                <p className="mb-4 line-clamp-2 text-sm text-muted-foreground">
-                  {product.description}
-                </p>
-                <div className="mb-4 flex flex-wrap gap-2">
-                  {product.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded border border-border bg-muted px-2 py-1 text-[10px] text-muted-foreground"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex items-center justify-between border-t border-border/50 pt-4">
-                  <div className="flex items-center gap-2">
-                    <div
-                      className={`size-6 rounded-full bg-gradient-to-tr ${product.sellerGradient}`}
-                    />
-                    <span className="text-xs text-muted-foreground">
-                      by{" "}
-                      <span className="cursor-pointer text-foreground hover:underline">
-                        {product.seller}
-                      </span>
-                    </span>
-                  </div>
-                  <div className="flex text-yellow-500">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`size-3.5 ${i < product.rating ? "fill-current" : "text-muted-foreground/30 fill-current"}`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        {featuredProducts.length > 0 ? (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {featuredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border py-16 text-center">
+            <Star className="mb-4 size-12 text-muted-foreground/50" />
+            <p className="text-lg font-medium text-muted-foreground">
+              Featured products coming soon
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Check back shortly or explore the marketplace.
+            </p>
+          </div>
+        )}
 
         <div className="mt-12 text-center md:hidden">
           <Link

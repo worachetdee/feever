@@ -34,3 +34,14 @@ create policy "Sellers can view purchases of their products"
         and products.seller_id = auth.uid()
     )
   );
+
+-- Deferred from 00002: product_files policy that depends on purchases
+create policy "Purchased files are viewable by buyers"
+  on public.product_files for select
+  using (
+    exists (
+      select 1 from public.purchases
+      where purchases.product_id = product_files.product_id
+        and purchases.buyer_id = auth.uid()
+    )
+  );

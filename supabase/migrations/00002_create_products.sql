@@ -85,15 +85,7 @@ create policy "Preview files are viewable by everyone"
   on public.product_files for select
   using (is_preview = true);
 
-create policy "Purchased files are viewable by buyers"
-  on public.product_files for select
-  using (
-    exists (
-      select 1 from public.purchases
-      where purchases.product_id = product_files.product_id
-        and purchases.buyer_id = auth.uid()
-    )
-  );
+-- NOTE: "Purchased files are viewable by buyers" policy is in 00003 (depends on purchases table)
 
 create policy "Sellers can manage their product files"
   on public.product_files for all
