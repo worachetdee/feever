@@ -6,11 +6,11 @@
 
 feever.co is an AI products marketplace where creators sell and buyers discover production-ready AI systems — workflow kits, AI-ready starters, MCP extensions, and complete launchables for the vibe coding era.
 
-This is a Next.js 15 full-stack application with Supabase (auth + database + storage), Stripe Connect (marketplace payments), and Meilisearch (search). The UI is dark-themed with orange/amber heat-gradient accents using Tailwind CSS + shadcn/ui.
+This is a Next.js 16 full-stack application with Supabase (auth + database + storage), Stripe Connect (marketplace payments), and Meilisearch (search). The UI is dark-themed with orange/amber heat-gradient accents using Tailwind CSS + shadcn/ui.
 
 ## Tech Stack
 
-- **Framework:** Next.js 15 (App Router, React Server Components, Server Actions)
+- **Framework:** Next.js 16 (App Router, React Server Components, Server Actions)
 - **Language:** TypeScript (strict mode)
 - **Styling:** Tailwind CSS v4 + shadcn/ui (dark theme default, orange/amber accent palette)
 - **Database:** PostgreSQL via Supabase (use Supabase client SDK, not raw SQL in app code)
@@ -24,138 +24,142 @@ This is a Next.js 15 full-stack application with Supabase (auth + database + sto
 
 ## Project Structure
 
+Files marked with `✓` exist. Files marked with `·` are planned but not yet created.
+
 ```
 feever/
-├── CLAUDE.md                    # This file — project context for Claude Code
-├── .env.local                   # Local environment variables (never commit)
-├── .env.example                 # Template for env vars
-├── next.config.ts
-├── tailwind.config.ts
-├── tsconfig.json
-├── package.json
+├── CLAUDE.md                    # ✓ This file — project context for Claude Code
+├── .env.local                   # · Local environment variables (never commit)
+├── .env.example                 # · Template for env vars
+├── next.config.ts               # ✓
+├── tailwind.config.ts           # ✓
+├── tsconfig.json                # ✓
+├── package.json                 # ✓
 │
 ├── supabase/
-│   ├── config.toml              # Supabase project config
-│   ├── migrations/              # SQL migrations (sequential, timestamped)
-│   │   ├── 00001_create_users_profile.sql
-│   │   ├── 00002_create_products.sql
-│   │   ├── 00003_create_purchases.sql
-│   │   ├── 00004_create_reviews.sql
-│   │   ├── 00005_create_forks.sql
-│   │   ├── 00006_create_quality_checks.sql
-│   │   └── 00007_create_credit_transactions.sql
-│   └── seed.sql                 # Seed data for development
+│   ├── config.toml              # · Supabase project config
+│   ├── migrations/              # ✓ SQL migrations (sequential, timestamped)
+│   │   ├── 00001_create_users_profile.sql  # ✓
+│   │   ├── 00002_create_products.sql       # ✓
+│   │   ├── 00003_create_purchases.sql      # ✓
+│   │   ├── 00004_create_reviews.sql        # ✓
+│   │   ├── 00005_create_forks.sql          # ✓
+│   │   ├── 00006_create_quality_checks.sql # ✓
+│   │   └── 00007_create_credit_transactions.sql # ✓
+│   └── seed.sql                 # · Seed data for development
 │
 ├── src/
+│   ├── proxy.ts                 # ✓ Auth proxy (Next.js 16 convention, replaces middleware.ts)
 │   ├── app/
-│   │   ├── layout.tsx           # Root layout (dark theme, fonts, providers)
-│   │   ├── page.tsx             # Homepage — featured products, categories, hero
-│   │   ├── globals.css          # Tailwind imports + custom CSS variables
+│   │   ├── layout.tsx           # ✓ Root layout (dark theme, Geist Sans, providers)
+│   │   ├── page.tsx             # ✓ Homepage — featured products, categories, hero
+│   │   ├── globals.css          # ✓ Tailwind imports + custom CSS variables
 │   │   │
 │   │   ├── (auth)/
-│   │   │   ├── login/page.tsx
-│   │   │   ├── signup/page.tsx
-│   │   │   └── callback/route.ts   # Supabase OAuth callback
+│   │   │   ├── login/page.tsx       # ✓
+│   │   │   ├── signup/page.tsx      # ✓
+│   │   │   └── callback/route.ts    # ✓ Supabase OAuth callback
 │   │   │
 │   │   ├── (marketplace)/
-│   │   │   ├── explore/page.tsx         # Browse all products with search + filters
+│   │   │   ├── explore/page.tsx         # ✓ Browse all products with search + filters
 │   │   │   ├── category/
-│   │   │   │   └── [slug]/page.tsx      # Category pages (starters, kits, extensions)
+│   │   │   │   └── [slug]/page.tsx      # ✓ Category pages (starters, kits, extensions)
 │   │   │   └── product/
 │   │   │       └── [slug]/
-│   │   │           ├── page.tsx         # Product detail page
-│   │   │           └── playground/page.tsx  # Live testing playground
+│   │   │           ├── page.tsx         # ✓ Product detail page
+│   │   │           └── playground/page.tsx  # · Live testing playground (v0.2)
 │   │   │
-│   │   ├── (seller)/
-│   │   │   ├── dashboard/page.tsx       # Seller dashboard — sales, analytics
+│   │   ├── seller/                      # Note: plain route, not (seller)/ route group
+│   │   │   ├── dashboard/page.tsx       # ✓ Seller dashboard — sales, analytics
 │   │   │   ├── products/
-│   │   │   │   ├── page.tsx             # Manage listings
-│   │   │   │   ├── new/page.tsx         # Create new product
-│   │   │   │   └── [id]/edit/page.tsx   # Edit product
-│   │   │   └── settings/page.tsx        # Seller settings, Stripe Connect onboarding
+│   │   │   │   ├── page.tsx             # ✓ Manage listings
+│   │   │   │   ├── new/page.tsx         # ✓ Create new product
+│   │   │   │   └── [id]/edit/page.tsx   # ✓ Edit product
+│   │   │   └── settings/page.tsx        # ✓ Seller settings, Stripe Connect onboarding
 │   │   │
-│   │   ├── (user)/
-│   │   │   ├── purchases/page.tsx       # My purchases + downloads
-│   │   │   ├── credits/page.tsx         # Credit balance + purchase credits
-│   │   │   └── settings/page.tsx        # Account settings
+│   │   ├── account/                     # Note: plain route, not (user)/ route group
+│   │   │   ├── purchases/page.tsx       # ✓ My purchases + downloads
+│   │   │   ├── credits/page.tsx         # ✓ Credit balance + purchase credits
+│   │   │   └── settings/page.tsx        # ✓ Account settings
 │   │   │
 │   │   └── api/
 │   │       ├── stripe/
-│   │       │   ├── connect/route.ts     # Stripe Connect onboarding
-│   │       │   ├── checkout/route.ts    # Create checkout session
-│   │       │   └── webhook/route.ts     # Stripe webhook handler
-│   │       ├── search/route.ts          # Meilisearch proxy
-│   │       └── playground/route.ts      # AI model proxy for playground
+│   │       │   ├── connect/route.ts     # ✓ Stripe Connect onboarding
+│   │       │   ├── checkout/route.ts    # ✓ Create checkout session
+│   │       │   └── webhook/route.ts     # ✓ Stripe webhook handler
+│   │       ├── search/route.ts          # ✓ Meilisearch proxy
+│   │       └── playground/route.ts      # · AI model proxy for playground (v0.2)
 │   │
 │   ├── components/
-│   │   ├── ui/                  # shadcn/ui components (button, card, input, etc.)
+│   │   ├── ui/                  # ✓ shadcn/ui components (button, card, input, badge, etc.)
 │   │   ├── layout/
-│   │   │   ├── header.tsx       # Nav with search, user menu, credits display
-│   │   │   ├── footer.tsx
-│   │   │   └── sidebar.tsx      # Category navigation
+│   │   │   ├── header.tsx       # ✓ Nav with search, user menu, credits display
+│   │   │   ├── footer.tsx       # ✓
+│   │   │   └── sidebar.tsx      # · Category navigation
 │   │   ├── product/
-│   │   │   ├── product-card.tsx         # Card for grid/list views
-│   │   │   ├── product-detail.tsx       # Full product page content
-│   │   │   ├── product-playground.tsx   # Interactive testing component
-│   │   │   ├── compatibility-badges.tsx # AI tool compatibility tags
-│   │   │   ├── quality-badge.tsx        # Trust tier badge (verified/pick/gold)
-│   │   │   ├── fork-tree.tsx            # Visual fork ancestry
-│   │   │   └── review-list.tsx          # Reviews with verified purchase tags
+│   │   │   ├── product-card.tsx         # · Card for grid/list views
+│   │   │   ├── product-detail.tsx       # · Full product page content
+│   │   │   ├── product-playground.tsx   # · Interactive testing component (v0.2)
+│   │   │   ├── compatibility-badges.tsx # · AI tool compatibility tags
+│   │   │   ├── quality-badge.tsx        # · Trust tier badge (verified/pick/gold)
+│   │   │   ├── fork-tree.tsx            # · Visual fork ancestry (v0.2)
+│   │   │   └── review-list.tsx          # · Reviews with verified purchase tags (v0.2)
 │   │   ├── seller/
-│   │   │   ├── product-form.tsx         # Create/edit product form
-│   │   │   ├── file-uploader.tsx        # Product file upload with drag/drop
-│   │   │   ├── analytics-chart.tsx      # Sales/views charts
-│   │   │   └── stripe-connect-button.tsx
+│   │   │   ├── product-form.tsx         # · Create/edit product form
+│   │   │   ├── file-uploader.tsx        # · Product file upload with drag/drop
+│   │   │   ├── analytics-chart.tsx      # · Sales/views charts
+│   │   │   └── stripe-connect-button.tsx # ·
 │   │   ├── search/
-│   │   │   ├── search-bar.tsx           # Global search with autocomplete
-│   │   │   ├── search-filters.tsx       # Faceted filters sidebar
-│   │   │   └── search-results.tsx       # Results grid with pagination
+│   │   │   ├── search-bar.tsx           # · Global search with autocomplete
+│   │   │   ├── search-filters.tsx       # · Faceted filters sidebar
+│   │   │   └── search-results.tsx       # · Results grid with pagination
 │   │   └── shared/
-│   │       ├── hero.tsx                 # Homepage hero with heat gradient
-│   │       ├── category-grid.tsx        # Category navigation cards
-│   │       ├── credit-display.tsx       # Credits balance indicator
-│   │       └── loading-skeleton.tsx
+│   │       ├── hero.tsx                 # · Homepage hero with heat gradient
+│   │       ├── category-grid.tsx        # · Category navigation cards
+│   │       ├── credit-display.tsx       # · Credits balance indicator
+│   │       └── loading-skeleton.tsx     # ·
 │   │
 │   ├── lib/
+│   │   ├── utils.ts             # ✓ cn() utility (shadcn/ui)
 │   │   ├── supabase/
-│   │   │   ├── client.ts        # Browser Supabase client
-│   │   │   ├── server.ts        # Server-side Supabase client (cookies-based)
-│   │   │   ├── admin.ts         # Service role client for admin operations
-│   │   │   └── middleware.ts    # Auth middleware for protected routes
+│   │   │   ├── client.ts        # ✓ Browser Supabase client
+│   │   │   ├── server.ts        # ✓ Server-side Supabase client (cookies-based)
+│   │   │   ├── admin.ts         # ✓ Service role client for admin operations
+│   │   │   └── middleware.ts    # ✓ Auth middleware helper (used by src/proxy.ts)
 │   │   ├── stripe/
-│   │   │   ├── client.ts        # Stripe SDK instance
-│   │   │   ├── connect.ts       # Connect account helpers
-│   │   │   └── checkout.ts      # Checkout session creation
+│   │   │   ├── client.ts        # ✓ Stripe SDK instance
+│   │   │   ├── connect.ts       # · Connect account helpers
+│   │   │   └── checkout.ts      # · Checkout session creation
 │   │   ├── meilisearch/
-│   │   │   ├── client.ts        # Meilisearch SDK instance
-│   │   │   └── sync.ts          # Sync products to search index
+│   │   │   ├── client.ts        # ✓ Meilisearch SDK instance
+│   │   │   └── sync.ts          # · Sync products to search index
 │   │   ├── ai/
-│   │   │   ├── playground.ts    # Multi-model testing (Claude, GPT, Gemini)
-│   │   │   └── quality.ts       # Automated quality scoring
+│   │   │   ├── playground.ts    # · Multi-model testing (v0.2)
+│   │   │   └── quality.ts       # · Automated quality scoring (v0.2)
 │   │   └── utils/
-│   │       ├── format.ts        # Price formatting, date helpers
-│   │       ├── slugify.ts       # URL slug generation
-│   │       └── constants.ts     # Categories, compatibility tags, quality tiers
+│   │       ├── format.ts        # ✓ Price formatting, date helpers
+│   │       ├── slugify.ts       # ✓ URL slug generation
+│   │       └── constants.ts     # ✓ Categories, compatibility tags, quality tiers
 │   │
 │   ├── hooks/
-│   │   ├── use-user.ts          # Current user hook
-│   │   ├── use-credits.ts       # Credit balance hook
-│   │   └── use-search.ts        # Search with debounce
+│   │   ├── use-user.ts          # ✓ Current user hook
+│   │   ├── use-credits.ts       # · Credit balance hook
+│   │   └── use-search.ts        # ✓ Search with debounce
 │   │
 │   └── types/
-│       ├── database.ts          # Generated Supabase types (supabase gen types)
-│       ├── product.ts           # Product-related types
-│       ├── stripe.ts            # Stripe-related types
-│       └── index.ts             # Re-exports
+│       ├── database.ts          # · Generated Supabase types (supabase gen types)
+│       ├── product.ts           # ✓ Product-related types
+│       ├── stripe.ts            # · Stripe-related types
+│       └── index.ts             # ✓ Re-exports
 │
 ├── scripts/
-│   ├── seed-products.ts         # Seed feever Labs products for development
-│   └── sync-search.ts          # One-off Meilisearch index sync
+│   ├── seed-products.ts         # · Seed feever Labs products for development
+│   └── sync-search.ts          # · One-off Meilisearch index sync
 │
 └── public/
-    ├── logo.svg
-    ├── og-image.png             # Social share image
-    └── favicon.ico
+    ├── logo.svg                 # ·
+    ├── og-image.png             # · Social share image
+    └── favicon.ico              # ✓
 ```
 
 ## Database Schema
@@ -283,7 +287,7 @@ Error:          hsl(0, 84%, 60%)     -- red
 ```
 
 ### Typography
-- Font: Inter (or Geist Sans if available)
+- Font: Geist Sans (primary), Geist Mono (code)
 - Headings: font-bold, tracking-tight
 - Body: font-normal, leading-relaxed
 
@@ -303,6 +307,12 @@ Use shadcn/ui with the dark theme. Override accent color to feever orange. Key c
 - Use `async/await` everywhere. No `.then()` chains.
 - Error handling: try/catch in server actions, return `{ error: string } | { data: T }` pattern.
 - Use Zod for all input validation (form data, API inputs, webhook payloads).
+
+### Routing
+- Auth proxy lives at `src/proxy.ts` (Next.js 16 convention, replaces `middleware.ts`)
+- Seller routes use `seller/` (plain route segment, not `(seller)/` route group) — URL: `/seller/...`
+- Account routes use `account/` (plain route segment, not `(user)/` route group) — URL: `/account/...`
+- Auth and marketplace still use route groups: `(auth)/`, `(marketplace)/`
 
 ### File Naming
 - Components: `kebab-case.tsx` (e.g., `product-card.tsx`)
